@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,13 +21,15 @@ namespace _20250610_DSA_and_Programming_2_Finals
 
             bool accFound = false;
             bool startAgain = true;
-            bool pinCheck = false ;
+            bool pinCheck = false;
             int userType;
 
-            string[] accDetails = {""};
+            string[] accDetails = { "" };
             string[] accounts;
+            string ATMCard = "";
+            string ATMCardHolder;
 
-            List<string> transactionList = new List<string> { "1. Withdrawal", "2. Deposit", "3. Balance", "4. Exit"};
+            List<string> transactionList = new List<string> { "1. Withdrawal", "2. Deposit", "3. Balance", "4. Exit" };
             List<string> adminMenu = new List<string> { "1. Restock", "2. Add Bulk Accounts", "3. Add Single Account", "4. Manage Admins", "5. Exit" };
             List<string> accountsHolder = new List<string>();
 
@@ -52,18 +54,38 @@ namespace _20250610_DSA_and_Programming_2_Finals
             // ENTERING OF ACCOUNT NUMBER
 
             userType = 0;
-
-            if (!File.Exists("card.csv"))
+            // updated now
+            while (true)
             {
-                Console.WriteLine("Please insert your ATM card before running the program.");
+                Console.Write("Please insert your ATM card by submitting the path of your card: ");
+                ATMCardHolder = Console.ReadLine();
+
+                for (int characterCount = 0; characterCount < ATMCardHolder.Length; characterCount++) 
+                {
+                    if (characterCount > 0 && characterCount < ATMCardHolder.Length - 1)
+                    {
+                        ATMCard += ATMCardHolder[characterCount];
+                    }
+                }
+
+                if (ATMCard != "")
+                {
+                    break;
+                }
+            }
+
+
+            if (!File.Exists(ATMCard))
+            {
+                Console.WriteLine("Your ATM card must only contain your account number.");
                 Console.WriteLine("Press anything to exit...");
                 Console.ReadKey();
-            }    
+            }
 
             else
             {
                 adminAcc = "";
-                if (double.TryParse(File.ReadAllText("card.csv"), out accNum))
+                if (double.TryParse(File.ReadAllText(ATMCard), out accNum))
                 {
                     userType = 1;
                 }
@@ -71,7 +93,7 @@ namespace _20250610_DSA_and_Programming_2_Finals
                 else
                 {
                     userType = 2;
-                    adminAcc = File.ReadAllText("card.csv");
+                    adminAcc = File.ReadAllText(ATMCard);
                 }
 
                 switch (userType)
@@ -118,11 +140,11 @@ namespace _20250610_DSA_and_Programming_2_Finals
 
                                     if (accDetails[1] == accPin)
                                     {
-                                        
+
                                         pinCheck = true;
                                         Console.Clear();
 
-                                        Console.WriteLine("Welcome " + accDetails[0] + "! "+ accDetails[3] + ".");
+                                        Console.WriteLine("Welcome " + accDetails[0] + "! " + accDetails[3] + ".");
                                         Console.WriteLine("Thank you for using our service.");
                                         Console.WriteLine();
 
@@ -506,7 +528,7 @@ namespace _20250610_DSA_and_Programming_2_Finals
                             Console.WriteLine("Accounts database is currently not available. Please contact administrator.");
                             Console.WriteLine("Press anything to exit...");
                             Console.ReadKey();
-                            
+
                         }
                         break;
                     case 2:
@@ -624,7 +646,7 @@ namespace _20250610_DSA_and_Programming_2_Finals
                                         break;
                                     }
 
-                                    
+
                                 }
                             }
 
@@ -643,7 +665,7 @@ namespace _20250610_DSA_and_Programming_2_Finals
                         }
                         break;
                 }
-                
+
             }
             Console.WriteLine("Exiting the program.");
             Console.WriteLine("Press anything to continue...");
