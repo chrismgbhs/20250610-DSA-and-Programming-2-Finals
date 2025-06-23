@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +22,7 @@ namespace _20250610_DSA_and_Programming_2_Finals
             bool accFound = false;
             bool startAgain = true;
             bool pinCheck = false;
+            bool noDuplicate;
             int userType;
 
             string[] accDetails = { "" };
@@ -760,6 +761,8 @@ namespace _20250610_DSA_and_Programming_2_Finals
 
                                                     foreach (string account in bulkAccounts)
                                                     {
+                                                        noDuplicate = true;
+
                                                         if (account.Split(',').Length == 4)
                                                         {
                                                             foreach (string account2 in userAccounts)
@@ -767,17 +770,20 @@ namespace _20250610_DSA_and_Programming_2_Finals
                                                                 if (account2 == account)
                                                                 {
                                                                     Console.WriteLine("Duplicate found, it will not be added to the database.");
+                                                                    noDuplicate = false;
+                                                                    break;
                                                                 }
+                                                            }
 
-                                                                else
-                                                                {
-                                                                    Console.WriteLine($"{account} will now be added to the database.");
-                                                                    accountsHolder.Add(account);
-                                                                }
+                                                            if (noDuplicate = true)
+                                                            {
+                                                                Console.WriteLine($"{account} will now be added to the database.");
+                                                                accountsHolder.Add(account);
                                                             }
                                                         }
                                                     }
 
+                                                    File.WriteAllLines("accounts.csv", accountsHolder);
                                                     Console.WriteLine("Successfully added bulk accounts.");
                                                 }
 
